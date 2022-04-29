@@ -1,0 +1,83 @@
+> use StudDB
+switched to db StudDB
+> db.createCollection("Student");
+{ "ok" : 1 }
+> db.Student.insert({_id:1,Name:"Arka",USN:"1BM19CS024",Semester:"VI",Dept_Name:"Computer Science",CGPA:8.3,Hobbies:["Cricket","Football"]});
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({_id:2,Name:"Ram",USN:"1BM19CS113",Semester:"VI",Dept_Name:"Computer Science",CGPA:9,Hobbies:["Singing","Partying"]});
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({_id:3,Name:"Kirti",USN:"1BM19IS102",Semester:"VI",Dept_Name:"Information Science",CGPA:6.3,Hobbies:["Skating","Dancing"]});
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({_id:4,Name:"Aditi",USN:"1BM19CS007",Semester:"VI",Dept_Name:"Computer Science",CGPA:9.9,Hobbies:["Manga","Anime"]});
+WriteResult({ "nInserted" : 1 })
+> db.Student.insert({_id:5,Name:"Amritesh",USN:"1BM19ME109",Semester:"VI",Dept_Name:"Mechanical Engineering",CGPA:4.3,Hobbies:["Chess","Cooking"]});
+WriteResult({ "nInserted" : 1 })
+> db.Student.find().pretty();
+{
+	"_id" : 1,
+	"Name" : "Arka",
+	"USN" : "1BM19CS024",
+	"Semester" : "VI",
+	"Dept_Name" : "Computer Science",
+	"CGPA" : 8.3,
+	"Hobbies" : [
+		"Cricket",
+		"Football"
+	]
+}
+{
+	"_id" : 2,
+	"Name" : "Ram",
+	"USN" : "1BM19CS113",
+	"Semester" : "VI",
+	"Dept_Name" : "Computer Science",
+	"CGPA" : 9,
+	"Hobbies" : [
+		"Singing",
+		"Partying"
+	]
+}
+{
+	"_id" : 3,
+	"Name" : "Kirti",
+	"USN" : "1BM19IS102",
+	"Semester" : "VI",
+	"Dept_Name" : "Information Science",
+	"CGPA" : 6.3,
+	"Hobbies" : [
+		"Skating",
+		"Dancing"
+	]
+}
+{
+	"_id" : 4,
+	"Name" : "Aditi",
+	"USN" : "1BM19CS007",
+	"Semester" : "VI",
+	"Dept_Name" : "Computer Science",
+	"CGPA" : 9.9,
+	"Hobbies" : [
+		"Manga",
+		"Anime"
+	]
+}
+{
+	"_id" : 5,
+	"Name" : "Amritesh",
+	"USN" : "1BM19ME109",
+	"Semester" : "VI",
+	"Dept_Name" : "Mechanical Engineering",
+	"CGPA" : 4.3,
+	"Hobbies" : [
+		"Chess",
+		"Cooking"
+	]
+}
+
+> db.Student.aggregate({$match:{Dept_Name:"Computer Science"}},{$group:{_id:"$Semester",AvgCGPA:{$avg:"$CGPA"}}},{$match:{AvgCGPA:{$gt:7.5}}});
+{ "_id" : "VI", "AvgCGPA" : 9.066666666666668 }
+
+
+mongoexport --host localhost --db StudDB --collection Student --type=csv --out /home/bmsce/024/output.txt --fields "Name","USN","Semester","Dept_Name","CGPA","Hobbies";
+2022-04-25T12:27:19.987+0530	connected to: localhost
+2022-04-25T12:27:19.988+0530	exported 5 records
